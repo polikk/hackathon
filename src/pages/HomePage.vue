@@ -10,10 +10,9 @@
           :title-slot="item.title || 'Bytte av hjelpemiddel'"
           :status-slot="item.status"
           :updated-slot="formatUpdated(item.lastUpdated)"
-          :href="item.href || undefined"
+         :href="generateHref(item)"
         />
-
-
+  
         <div v-else-if="isLoading">Laster data...</div>
         <div v-else-if="isError">Kunne ikke hente data</div>
       </div>
@@ -47,31 +46,10 @@ function formatUpdated(dateStr) {
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
+function generateHref(item) {
+  return `/case/${item.id}`;
+}
 
-// Status to color mapping utility
-function getStatusColor(status) {
-  const green = 'rgba(204, 241, 214, 1)';
-  const red = 'rgba(255, 194, 194, 1)';
-  const yellow = 'rgba(255, 236, 204, 1)';
-  const blue = 'rgba(216, 249, 255, 1)';
-  switch (status) {
-    case 'Mottatt av Nav':
-    case 'Godkjent':
-    case 'Innvilget':
-    case 'Levert':
-      return green;
-    case 'Avslått':
-      return red;
-    case 'Under behandling':
-    case 'Planlagt utlevert':
-    case 'Delvis innvilget':
-      return yellow;
-    case 'Ferdig behandlet':
-    case 'Saken er lukket':
-    case 'Hjelpemiddel mottatt kommunalt lager':
-      return blue;
-    default:
-      return blue;}}
 
 const { isLoading, isError, data, error } = useQuery({
   enabled: !!user.value && !!user.value.data.id,
