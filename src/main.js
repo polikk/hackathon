@@ -7,10 +7,12 @@ import { createWebHistory, createRouter } from 'vue-router'
 import { createPinia } from 'pinia'
 import HomePage from './pages/HomePage.vue';
 import SignPage from './pages/SignPage.vue';
+import CasePage from './pages/CasePage.vue';
 
 const routes = [
   { path: '/', component: HomePage },
   { path: '/sign', component: SignPage },
+  { path: '/case/:id', component: CasePage, props: true },
 ]
 
 const router = createRouter({

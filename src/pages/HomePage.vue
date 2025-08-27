@@ -1,7 +1,7 @@
 <template>
       <div class="main">
         <div class="header">
-            {{ isLoading ? `Loo` : `Hoo` }}
+            
         </div>
         <card-info
           v-for="item in data.data"
@@ -20,7 +20,12 @@
 </template>
 <script setup>
 
-import { useQuery } from '@tanstack/vue-query'
+import { useQuery, useQueryClient } from '@tanstack/vue-query'
+import { onMounted } from 'vue';
+const queryClient = useQueryClient();
+onMounted(() => {
+  queryClient.invalidateQueries({ queryKey: ['user-cases'] });
+});
 import axios from 'axios';
 import CardInfo from '@/components/CardInfo.vue';
 import SignPage from './SignPage.vue';

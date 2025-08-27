@@ -8,7 +8,7 @@
         <NavdsLinkPanel v-else :href="href">
           <template #title>{{ titleSlot }}</template>
           <template #status >
-            <span :style="{ background: getStatusColor(statusSlot)}">{{ statusSlot }}</span>
+            <span class="status" :style="{ background: getStatusColor(statusSlot), height: '32px', display: 'inline-flex' }">{{ statusSlot }}</span>
           </template>
           <template #updated>{{ updatedSlot }}</template>
         </NavdsLinkPanel>
@@ -58,7 +58,11 @@ function getStatusColor(status) {
   
 
 const loading = ref(false);
-const href = computed(() => props.href || '/hjelpemidler/dinehjelpemidler/soknad/4322-brukerpassbytte_innsendt');
+const href = computed(() => {
+  if (props.href) return props.href;
+  if ((props as any).id) return `/case/${(props as any).id}`;
+  return '/hjelpemidler/dinehjelpemidler/soknad/4322-brukerpassbytte_innsendt';
+});
 const titleSlot = computed(() => props.titleSlot ?? props.title ?? 'Bytte av hjelpemiddel');
 const statusSlot = computed(() => props.statusSlot ?? (props.likes != null ? props.likes + ' Likes' : '42 Likes'));
 const updatedSlot = computed(() => props.updatedSlot ?? 'Oppdatert 8. mars 2023');
@@ -67,5 +71,10 @@ const updatedSlot = computed(() => props.updatedSlot ?? 'Oppdatert 8. mars 2023'
 <style scoped>
 .header{
     font-size: 1.2rem;
+}
+.status{
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
 }
 </style>
